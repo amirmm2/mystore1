@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+<h2>تأیید نهایی سفارش</h2>
+
+<div class="card my-4">
+  <div class="card-header">سفارش شما</div>
+  <div class="card-body">
+      {% for item in items %}
+          <strong>{{ item.product.name }}</strong><br>
+          تعداد: {{ item.quantity }} <br>
+          قیمت واحد: {% if item.product.is_sale %} {{ item.product.sale_price|intcomma }} {% else %} {{ item.product.price|intcomma }} {% endif %}<br>
+          جمع: {{ item.total_price|intcomma }} تومان
+          <hr>
+      {% endfor %}
+      <strong>مجموع کل: {{ total|intcomma }} تومان</strong>
+  </div>
+</div>
+
+<div class="card my-4">
+  <div class="card-header">آدرس ارسال</div>
+  <div class="card-body">
+      <form method="post" action="{% url 'process_order' %}">
+          {% csrf_token %}
+          {% if shipping %}
+              <p><strong>نام و نام خانوادگی:</strong> {{ shipping.shipping_fullname }}</p>
+              <p><strong>آدرس:</strong> {{ shipping.shipping_address }}</p>
+              <p><strong>استان:</strong> {{ shipping.shipping_state }}</p>
+              <p><strong>کدپستی:</strong> {{ shipping.shipping_zipcode }}</p>
+              <p><strong>شماره تماس:</strong> {{ shipping.shipping_phone }}</p>
+              <p><strong>کشور:</strong> {{ shipping.shipping_country }}</p>
+          {% else %}
+              <p>اطلاعات ارسال موجود نیست.</p>
+          {% endif %}
+          <button type="submit" class="btn btn-success mt-3">ثبت سفارش و پرداخت</button>
+      </form>
+  </div>
+</div>
+
+{% endblock %}

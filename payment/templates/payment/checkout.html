@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+<h2>سبد خرید شما</h2>
+
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">صورت حساب</h1>
+            <p class="lead fw-normal text-white-50 mb-0">لطفا سفارشتان را بررسی کنید</p>
+        </div>
+    </div>
+</header>
+<br>
+
+<div class="card">
+  <div class="card-header">خلاصه سفارشات شما:</div>
+  <div class="card-body">
+      {% if items %}
+          {% for item in items %}
+              <strong>{{ item.product.name }}</strong><br>
+              تعداد: {{ item.quantity }}<br>
+              قیمت واحد:
+              {% if item.product.is_sale %}
+                  {{ item.product.sale_price|intcomma }}
+              {% else %}
+                  {{ item.product.price|intcomma }}
+              {% endif %}
+              <br>
+              جمع: {{ item.total_price|intcomma }} تومان
+              <hr>
+          {% endfor %}
+      {% else %}
+          <p>سبد خرید شما خالی است.</p>
+      {% endif %}
+      <strong>مجموع کل: {{ total|intcomma }} تومان</strong>
+  </div>
+</div>
+<br>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="card">
+      <div class="card-header">مشخصات ارسال :</div>
+      <div class="card-body">
+          {{ shipping_form.as_p }}
+          {% if shipping_form.errors %}
+              <div class="alert alert-danger mt-3">
+                  <strong>لطفا خطاهای فرم را برطرف کنید:</strong>
+                  <ul class="mb-0">
+                      {% for field, errors in shipping_form.errors.items %}
+                          {% for error in errors %}
+                              <li>{{ field }}: {{ error }}</li>
+                          {% endfor %}
+                      {% endfor %}
+                  </ul>
+              </div>
+          {% endif %}
+      </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-sm btn-outline-secondary">ادامه</button>
+</form>
+
+{% endblock %}

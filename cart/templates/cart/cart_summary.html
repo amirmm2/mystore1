@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+<h2>سبد خرید شما</h2>
+
+{% if items %}
+<table class="table align-middle">
+    <thead>
+        <tr>
+            <th>محصول</th>
+            <th>تعداد</th>
+            <th>قیمت واحد</th>
+            <th>قیمت کل</th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr id="row-{{ item.product.id }}">
+            <td>
+                {% if item.product.picture %}
+                    <img src="{{ item.product.picture.url }}" alt="{{ item.product.name }}" width="60" class="me-2">
+                {% else %}
+                    <img src="https://dummyimage.com/60x60/dee2e6/6c757d.jpg" alt="تصویر ندارد">
+                {% endif %}
+                {{ item.product.name }}
+            </td>
+            <td id="qty-{{ item.product.id }}">{{ item.quantity }}</td>
+            <td>{{ item.product.sale_price|default:item.product.price|intcomma }} تومان</td>
+            <td id="total-{{ item.product.id }}">{{ item.total_price|intcomma }} تومان</td>
+            <td>
+                <button class="btn btn-sm btn-success add-cart-summary" data-id="{{ item.product.id }}">+</button>
+                <button class="btn btn-sm btn-danger remove-cart-summary" data-id="{{ item.product.id }}">🗑️</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><strong>جمع کل: <span id="total-cart">{{ total_price|intcomma }}</span> تومان</strong></p>
+
+<a href="{% url 'checkout' %}" class="btn btn-success mt-3">پرداخت</a>
+
+{% else %}
+<p>سبد خرید خالی است.</p>
+{% endif %}
+
+<a href="{% url 'home' %}" class="btn btn-secondary mt-2">بازگشت به صفحه اصلی</a>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+$(document).ready(function() {
+
+    $('.add-cart-summary').click(function(e) {
+        e.preventDefault();
+        var productId = $(this).data('id');
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "add_to_cart" 0 %}'.replace('0', productId),
+            data: { csrfmiddlewaretoken: '{{ csrf_token }}', product_qty: 1 },
+            success: function(response) {
+                $('#qty-' + productId).text(response.item_qty);
+                $('#total-' + productId).text(response.item_total_price.toLocaleString() + ' تومان');
+                $('#total-cart').text(response.total_price.toLocaleString() + ' تومان');
+                $('#cart-count').text(response.total_qty);
+            }
+        });
+    });
+
+    $('.remove-cart-summary').click(function(e) {
+        e.preventDefault();
+        var productId = $(this).data('id');
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "remove_from_cart" 0 %}'.replace('0', productId),
+            data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+            success: function(response) {
+                $('#row-' + productId).remove();
+                $('#total-cart').text(response.total_price.toLocaleString() + ' تومان');
+                $('#cart-count').text(response.total_qty);
+            }
+        });
+    });
+
+});
+</script>
+
+{% endblock %}
