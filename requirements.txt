@@ -53,7 +53,7 @@ Kivy-Garden==0.1.5
 kivy_deps.angle==0.4.0
 kivy_deps.glew==0.3.1
 kivy_deps.sdl2==0.8.0
-kivymd @ https://github.com/kivymd/KivyMD/archive/master.zip#sha256=fd454f13b28fbba3f5c7c1c473a4657fad217bf1fde5a831083042d334c0b0b7
+kivymd @ https://github.com/kivymd/KivyMD/archive/master.zip
 kiwisolver==1.4.8
 legacy-cgi==2.6.3
 lxml==5.4.0
