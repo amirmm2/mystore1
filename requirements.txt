@@ -84,7 +84,6 @@ pyflakes==3.3.2
 pygame==2.6.1
 Pygments==2.19.2
 pyparsing==3.2.3
-pypiwin32==223
 PyQt5==5.15.11
 PyQt5-Qt5==5.15.2
 PyQt5_sip==12.17.0
@@ -95,7 +94,6 @@ pyTelegramBotAPI==4.27.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 pytz==2025.2
-pywin32==310
 PyYAML==6.0.2
 pyzmq==27.0.0
 render==1.0.0
