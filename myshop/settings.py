@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://USERNAME:PASSWORD@HOST:PORT/DBNAME',
+        default='postgresql://mystore1_user:YKi2AmnH1LXSuMqub6KdPvYdryeIZGQx@dpg-d3mjlqq4d50c73bds07g-a/mystore1',
         conn_max_age=600,
         ssl_require=True
     )
