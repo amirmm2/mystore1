@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='PASTE_EXTERNAL_DATABASE_URL_HERE',
+        default='postgresql://mystore1_9j5b_user:bg1zcHqiABAfBdyAdGniCwxomlZ8l7qA@dpg-d3nqumje5dus73ei9tr0-a/mystore1_9j5b',
         conn_max_age=600,
         ssl_require=True
     )
