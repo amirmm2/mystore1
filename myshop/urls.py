@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from django.contrib.auth.models import User  # 👈 اینو اضافه کن
 
 # 👇 این قسمت رو اضافه کن (بالای urlpatterns)
-if not User.objects.filter(username="Admin").exists():
+if not User.objects.filter(username="Amir").exists():
     User.objects.create_superuser("Amir", "amirhoseinmahm2002@gmail.com", "A09020039798a")
 
 urlpatterns = [
